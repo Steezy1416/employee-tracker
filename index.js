@@ -74,7 +74,7 @@ const employees = () => {
             type: "list",
             name: "employeeOption",
             message: "What would you like to do with employees",
-            choices: ["(1) View all employees", "(2) Add a employee", "(3) Update employee role", "(4) Remove Employee", "(5) View employees by manager", "(6) View employees by department"]
+            choices: ["(1) View all employees", "(2) Add a employee", "(3) Update employee role", "(4) Remove Employee", "(5) View employees by manager", "(6) View employees by department", "(7) Update employee manager"]
         },
         //Start of add employee
         {
@@ -141,9 +141,58 @@ const employees = () => {
             }
         },
         //end of remove employee
+
+        //start of employee based on manager
+        {
+            type: "input",
+            name: "employeeManagerList",
+            message: "Under which manager?",
+            when: ({employeeOption}) => {
+                const option = employeeOption.split(/[()]+/)
+                if(option[1] === "5"){
+                    return true
+                }
+            }
+        },
+        //end of employee based on manager
+
+        //start of employee based on department
+        {
+            type: "input",
+            name: "employeeDepartmentList",
+            message: "Under which department?",
+            when: ({employeeOption}) => {
+                const option = employeeOption.split(/[()]+/)
+                if(option[1] === "6"){
+                    return true
+                }
+            }
+        },
+        //end of employee based on department
+
+        //start of update employee manager
+        {
+            type: "input",
+            name: "employeeManagerUpdateName",
+            message: "Which employee would you like to update their manager?",
+            when: ({employeeOption}) => {
+                const option = employeeOption.split(/[()]+/)
+                if(option[1] === "7"){
+                    return true
+                }
+            }
+        },
+        {
+            type: "input",
+            name: "employeeManagerUpdateMan",
+            message: "Who will be the updated manager?",
+            when: ({employeeManagerUpdateName}) => employeeManagerUpdateName
+        },
+        //end of update employee manager
     ])
     .then(choice => {
         console.log(choice)
+        question()
     })
 }
 
