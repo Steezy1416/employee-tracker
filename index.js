@@ -1,5 +1,11 @@
 const inquirer = require("inquirer")
-const { departmentArr ,displayDepartment, addDepartment } = require("./functions/department")
+const { getDepartmentNames} = require("./functions/department")
+const { getEmployeeNames} = require("./functions/employee")
+const { getRoleTitles} = require("./functions/role")
+
+const departmentNames = []
+const employeeNames = []
+const roleNames = []
 
 const question = () => {
     return inquirer
@@ -39,10 +45,10 @@ const departments = () => {
                 }
             },
             {
-                type: "list",
+                type: "rawlist",
                 name: "removeDepartmentName",
                 message: "Which department would you like to remove?",
-                choices: list,
+                choices: departmentNames,
                 when: ({ departmentOption }) => {
                     const option = departmentOption.split(/[()]+/)
                     if (option[1] === "3") {
@@ -51,9 +57,10 @@ const departments = () => {
                 }
             },
             {
-                type: "input",
+                type: "rawlist",
                 name: "totalDepartmentName",
                 message: "Which department would you like to view its total utilized budged?",
+                choices: departmentNames,
                 when: ({ departmentOption }) => {
                     const option = departmentOption.split(/[()]+/)
                     if (option[1] === "4") {
@@ -97,24 +104,27 @@ const employees = () => {
                 when: ({ firstName }) => firstName
             },
             {
-                type: "input",
+                type: "rawlist",
                 name: "employeeRole",
                 message: "What is the employee's role?",
+                choices: roleNames,
                 when: ({ lastName }) => lastName
             },
             {
-                type: "input",
+                type: "rawlist",
                 name: "employeeDepartment",
                 message: "What is the employee's department?",
+                choices: departmentNames,
                 when: ({ employeeRole }) => employeeRole
             },
             //end of add employee
 
             //start of update employee role
             {
-                type: "input",
+                type: "rawlist",
                 name: "employeeNameUpt",
                 message: "Which employee's role would you like to update?",
+                choices: employeeNames,
                 when: ({ employeeOption }) => {
                     const option = employeeOption.split(/[()]+/)
                     if (option[1] === "3") {
@@ -123,18 +133,20 @@ const employees = () => {
                 }
             },
             {
-                type: "input",
+                type: "rawlist",
                 name: "employeeDepartmentUpt",
                 message: "What is the updated employees role?",
+                choices: roleNames,
                 when: ({ employeeNameUpt }) => employeeNameUpt
             },
             //end of update employee role
 
             //start of remove employee
             {
-                type: "input",
+                type: "rawlist",
                 name: "removeName",
                 message: "Which employee would you like to remove?",
+                choices: employeeNames,
                 when: ({ employeeOption }) => {
                     const option = employeeOption.split(/[()]+/)
                     if (option[1] === "4") {
@@ -160,9 +172,10 @@ const employees = () => {
 
             //start of employee based on department
             {
-                type: "input",
+                type: "rawlist",
                 name: "employeeDepartmentList",
                 message: "Under which department?",
+                choices: departmentNames,
                 when: ({ employeeOption }) => {
                     const option = employeeOption.split(/[()]+/)
                     if (option[1] === "6") {
@@ -174,9 +187,10 @@ const employees = () => {
 
             //start of update employee manager
             {
-                type: "input",
+                type: "rawlist",
                 name: "employeeManagerUpdateName",
                 message: "Which employee would you like to update their manager?",
+                choices: employeeNames,
                 when: ({ employeeOption }) => {
                     const option = employeeOption.split(/[()]+/)
                     if (option[1] === "7") {
@@ -225,15 +239,17 @@ const roles = () => {
                 when: ({ roleName }) => roleName
             },
             {
-                type: "input",
+                type: "rawlist",
                 name: "roleDepartment",
                 message: "What department does the role belong to?",
+                choices: departmentNames,
                 when: ({ roleSalary }) => roleSalary
             },
             {
-                type: "input",
+                type: "rawlist",
                 name: "roleDeletion",
                 message: "Which role would you like to remove?",
+                choices: roleNames,
                 when: ({ roleOption }) => {
                     const option = roleOption.split(/[()]+/)
                     if (option[1] === "3") {
@@ -249,5 +265,22 @@ const roles = () => {
 
 }
 
-console.log(departmentArr())
-question()
+Promise.all([
+    getDepartmentNames(),
+    getEmployeeNames(),
+    getRoleTitles()
+])
+.then((results) => {
+    results[0].forEach(row => {
+        departmentNames.push(row.name)
+    });
+    results[1].forEach(row => {
+        employeeNames.push(`${row.first_name} ${row.last_name}`)
+    })
+    results[2].forEach(row => {
+        roleNames.push(row.title)
+    })
+})
+.then(() => {
+    question()
+})

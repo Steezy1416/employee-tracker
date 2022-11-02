@@ -1,9 +1,9 @@
 const db = require("../db/connection")
 
-//returns all department names
-const getDepartmentNames = () => {
+//returns all employee names
+const getEmployeeNames = () => {
     return new Promise((resolve, reject) => {
-        const sql = "SELECT name FROM departments"
+        const sql = "SELECT first_name, last_name FROM employees"
         db.query(sql, (err, rows) => {
             if(err){
                 reject(err)
@@ -16,5 +16,5 @@ const getDepartmentNames = () => {
 }
 
 module.exports = {
-    getDepartmentNames
+    getEmployeeNames
 }
