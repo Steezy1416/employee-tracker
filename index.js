@@ -1,10 +1,11 @@
 const inquirer = require("inquirer")
 const { getDepartmentNames, departmentHandler} = require("./functions/department")
-const { getEmployeeNames} = require("./functions/employee")
+const { getEmployeeNames, getManagerNames, employeeHandler} = require("./functions/employee")
 const { getRoleTitles, roleHandler} = require("./functions/role")
 
 let departmentNames = []
 let employeeNames = []
+let managerNames = []
 let roleNames = []
 
 const question = () => {
@@ -117,9 +118,9 @@ const employees = () => {
             },
             {
                 type: "rawlist",
-                name: "employeeDepartment",
-                message: "What is the employee's department?",
-                choices: departmentNames,
+                name: "employeeManager",
+                message: "Who is the employee's manager?",
+                choices: managerNames,
                 when: ({ employeeRole }) => employeeRole
             },
             //end of add employee
@@ -211,9 +212,13 @@ const employees = () => {
             },
             //end of update employee manager
         ])
-        .then(choice => {
-            console.log(choice)
-            question()
+        .then(answer => {
+            console.log(answer)
+            const optionNum = answer.employeeOption.split(/[()]+/)[1]
+            employeeHandler(optionNum, answer)
+            .then(() => {
+                setQuestion()
+            })
         })
 }
 
@@ -277,6 +282,7 @@ const setQuestion = () => {
     Promise.all([
         getDepartmentNames(),
         getEmployeeNames(),
+        getManagerNames(),
         getRoleTitles()
     ])
     .then((results) => {
@@ -292,6 +298,9 @@ const setQuestion = () => {
             employeeNames.push(`${row.first_name} ${row.last_name}`)
         })
         results[2].forEach(row => {
+            managerNames.push(`${row.first_name} ${row.last_name}`)
+        })
+        results[3].forEach(row => {
             roleNames.push(row.title)
         })
     })
