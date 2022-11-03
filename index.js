@@ -1,7 +1,7 @@
 const inquirer = require("inquirer")
 const { getDepartmentNames, departmentHandler} = require("./functions/department")
 const { getEmployeeNames} = require("./functions/employee")
-const { getRoleTitles} = require("./functions/role")
+const { getRoleTitles, roleHandler} = require("./functions/role")
 
 let departmentNames = []
 let employeeNames = []
@@ -265,7 +265,11 @@ const roles = () => {
         ])
         .then(answer => {
             console.log(answer)
-            question()
+            const optionNum = answer.roleOption.split(/[()]+/)[1]
+            roleHandler(optionNum, answer)
+            .then(() => {
+                setQuestion()
+            })
         })
 
 }
