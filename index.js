@@ -70,17 +70,17 @@ const departments = () => {
             },
         ])
         .then(answer => {
-            console.log(answer)
+            // console.log(answer)
             const optionNum = answer.departmentOption.split(/[()]+/)[1]
-            departmentHandler(optionNum)
+            departmentHandler(optionNum).then(rows => {
+                console.log("")
+                console.log(rows)
+            })
+            .then(() => {
+                question()
+            })
         })
-        .then(rows => {
-            console.log(rows)
-            console.table(rows)
-        })
-        .then(() => {
-            question()
-        })
+        
 
 }
 

@@ -1,4 +1,5 @@
 const db = require("../db/connection")
+const cTable = require("console.table")
 
 //returns all department names
 const getDepartmentNames = () => {
@@ -15,10 +16,12 @@ const getDepartmentNames = () => {
     })
 }
 
+//handles which department function will be called based on the users choice
 const departmentHandler = (optionNum, answerObj) => {
-    if(optionNum === "1"){displayDepartment()}
+    if(optionNum === "1"){return displayDepartment()}
 }
 
+//displays the dapartment table
 const displayDepartment = () => {
     return new Promise((resolve, reject) => {
         const sql = "SELECT * FROM departments"
@@ -27,7 +30,8 @@ const displayDepartment = () => {
                 reject(err)
             }
             else{
-                resolve(rows)
+                const table = cTable.getTable(rows)
+                resolve(table)
             }
         })
     })
