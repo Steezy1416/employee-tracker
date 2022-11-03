@@ -76,6 +76,10 @@ const departments = () => {
         })
         .then(rows => {
             console.log(rows)
+            console.table(rows)
+        })
+        .then(() => {
+            question()
         })
 
 }
