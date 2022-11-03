@@ -15,6 +15,25 @@ const getDepartmentNames = () => {
     })
 }
 
+const departmentHandler = (optionNum, answerObj) => {
+    if(optionNum === "1"){displayDepartment()}
+}
+
+const displayDepartment = () => {
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT * FROM departments"
+        db.query(sql, (err, rows) => {
+            if(err){
+                reject(err)
+            }
+            else{
+                resolve(rows)
+            }
+        })
+    })
+}
+
 module.exports = {
-    getDepartmentNames
+    getDepartmentNames,
+    departmentHandler
 }
