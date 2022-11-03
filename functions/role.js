@@ -18,8 +18,9 @@ const getRoleTitles = () => {
 
 //handles role functions based on the users choice
 const roleHandler = (optionNum, answer) => {
-    if (optionNum === "1") { return displayRoles() }
-    if (optionNum === "2") { return addRole(answer) }
+    if(optionNum === "1"){return displayRoles()}
+    if(optionNum === "2"){return addRole(answer)}
+    if(optionNum === "3"){return removeRole(answer)}
 }
 
 //displays a table of all the roles
@@ -60,6 +61,23 @@ const addRole = (answer) => {
             }
         })
 
+    })
+}
+
+//removes a role
+const removeRole = (answer) => {
+    return new Promise((resolve, reject) => {
+        const {roleDeletion} = answer
+        const sql = `DELETE FROM roles WHERE title = "${roleDeletion}"`
+
+        db.query(sql, (err, rows) => {
+            if(err) {
+                reject(err)
+            }
+            else{
+                resolve(rows)
+            }
+        })
     })
 }
 

@@ -264,7 +264,6 @@ const roles = () => {
             },
         ])
         .then(answer => {
-            console.log(answer)
             const optionNum = answer.roleOption.split(/[()]+/)[1]
             roleHandler(optionNum, answer)
             .then(() => {
