@@ -3,9 +3,9 @@ const { getDepartmentNames, departmentHandler} = require("./functions/department
 const { getEmployeeNames} = require("./functions/employee")
 const { getRoleTitles} = require("./functions/role")
 
-const departmentNames = []
-const employeeNames = []
-const roleNames = []
+let departmentNames = []
+let employeeNames = []
+let roleNames = []
 
 const question = () => {
     return inquirer
@@ -70,14 +70,11 @@ const departments = () => {
             },
         ])
         .then(answer => {
-            // console.log(answer)
+            console.log(answer)
             const optionNum = answer.departmentOption.split(/[()]+/)[1]
-            departmentHandler(optionNum).then(rows => {
-                console.log("")
-                console.log(rows)
-            })
+            departmentHandler(optionNum, answer)
             .then(() => {
-                question()
+                setQuestion()
             })
         })
         
@@ -273,22 +270,31 @@ const roles = () => {
 
 }
 
-Promise.all([
-    getDepartmentNames(),
-    getEmployeeNames(),
-    getRoleTitles()
-])
-.then((results) => {
-    results[0].forEach(row => {
-        departmentNames.push(row.name)
-    });
-    results[1].forEach(row => {
-        employeeNames.push(`${row.first_name} ${row.last_name}`)
+const setQuestion = () => {
+    Promise.all([
+        getDepartmentNames(),
+        getEmployeeNames(),
+        getRoleTitles()
+    ])
+    .then((results) => {
+
+        departmentNames = []
+        employeeNames = []
+        roleNames = []
+
+        results[0].forEach(row => {
+            departmentNames.push(row.name)
+        });
+        results[1].forEach(row => {
+            employeeNames.push(`${row.first_name} ${row.last_name}`)
+        })
+        results[2].forEach(row => {
+            roleNames.push(row.title)
+        })
     })
-    results[2].forEach(row => {
-        roleNames.push(row.title)
+    .then(() => {
+        question()
     })
-})
-.then(() => {
-    question()
-})
+}
+setQuestion()
+
