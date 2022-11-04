@@ -24,8 +24,3 @@ CREATE TABLE employees (
     FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE SET NULL
 );
 
--- new roles table
-select title, salary, department
-    from roles
-    left join departments
-    on roles.department_id = departments.id;
