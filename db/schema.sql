@@ -24,3 +24,9 @@ CREATE TABLE employees (
     FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE SET NULL
 );
 
+SELECT employees.id, first_name, last_name, manager_id, roles.title, roles.salary, departments.department
+    FROM employees
+    LEFT JOIN roles
+    ON employees.role_id = roles.id
+    LEFT JOIN departments
+    ON roles.department_id = departments.id;

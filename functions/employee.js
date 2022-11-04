@@ -45,7 +45,13 @@ const employeeHandler = (optionNum, answer) => {
 //display the employees table
 const displayEmployees = () => {
     return new Promise((resolve, reject) => {
-        const sql = "SELECT * FROM employees"
+        const sql = `SELECT employees.id, first_name, last_name, manager_id, roles.title, roles.salary, departments.department
+        FROM employees
+        LEFT JOIN roles
+        ON employees.role_id = roles.id
+        LEFT JOIN departments
+        ON roles.department_id = departments.id;`
+        
         db.query(sql, (err, rows) => {
             if (err) {
                 reject(err)

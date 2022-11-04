@@ -22,6 +22,7 @@ const question = () => {
             if (answer.options === "Departments") { departments() }
             if (answer.options === "Employees") { employees() }
             if (answer.options === "Roles") { roles() }
+            return
         })
 }
 
