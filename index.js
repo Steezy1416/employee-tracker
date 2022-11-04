@@ -1,7 +1,7 @@
 const inquirer = require("inquirer")
-const { getDepartmentNames, departmentHandler} = require("./functions/department")
-const { getEmployeeNames, getManagerNames, employeeHandler} = require("./functions/employee")
-const { getRoleTitles, roleHandler} = require("./functions/role")
+const { getDepartmentNames, departmentHandler } = require("./functions/department")
+const { getEmployeeNames, getManagerNames, employeeHandler } = require("./functions/employee")
+const { getRoleTitles, roleHandler } = require("./functions/role")
 
 let departmentNames = []
 let employeeNames = []
@@ -59,14 +59,13 @@ const departments = () => {
             }
         ])
         .then(answer => {
-            console.log(answer)
             const optionNum = answer.departmentOption.split(/[()]+/)[1]
             departmentHandler(optionNum, answer)
-            .then(() => {
-                setQuestion()
-            })
+                .then(() => {
+                    setQuestion()
+                })
         })
-        
+
 
 }
 
@@ -188,12 +187,11 @@ const employees = () => {
             //end of update employee manager
         ])
         .then(answer => {
-            console.log(answer)
             const optionNum = answer.employeeOption.split(/[()]+/)[1]
             employeeHandler(optionNum, answer)
-            .then(() => {
-                setQuestion()
-            })
+                .then(() => {
+                    setQuestion()
+                })
         })
 }
 
@@ -246,9 +244,9 @@ const roles = () => {
         .then(answer => {
             const optionNum = answer.roleOption.split(/[()]+/)[1]
             roleHandler(optionNum, answer)
-            .then(() => {
-                setQuestion()
-            })
+                .then(() => {
+                    setQuestion()
+                })
         })
 
 }
@@ -260,28 +258,28 @@ const setQuestion = () => {
         getManagerNames(),
         getRoleTitles()
     ])
-    .then((results) => {
+        .then((results) => {
 
-        departmentNames = []
-        employeeNames = []
-        roleNames = []
+            departmentNames = []
+            employeeNames = []
+            roleNames = []
 
-        results[0].forEach(row => {
-            departmentNames.push(row.name)
-        });
-        results[1].forEach(row => {
-            employeeNames.push(`${row.first_name} ${row.last_name}`)
+            results[0].forEach(row => {
+                departmentNames.push(row.department)
+            });
+            results[1].forEach(row => {
+                employeeNames.push(`${row.first_name} ${row.last_name}`)
+            })
+            results[2].forEach(row => {
+                managerNames.push(`${row.first_name} ${row.last_name}`)
+            })
+            results[3].forEach(row => {
+                roleNames.push(row.title)
+            })
         })
-        results[2].forEach(row => {
-            managerNames.push(`${row.first_name} ${row.last_name}`)
+        .then(() => {
+            question()
         })
-        results[3].forEach(row => {
-            roleNames.push(row.title)
-        })
-    })
-    .then(() => {
-        question()
-    })
 }
 setQuestion()
 
