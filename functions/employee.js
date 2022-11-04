@@ -51,7 +51,7 @@ const displayEmployees = () => {
         ON employees.role_id = roles.id
         LEFT JOIN departments
         ON roles.department_id = departments.id;`
-        
+
         db.query(sql, (err, rows) => {
             if (err) {
                 reject(err)
@@ -89,7 +89,6 @@ const addEmployee = (answer) => {
                                 reject(err)
                             }
                             else {
-                                managerId = rows[0].id
                                 const sql3 = `INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES ("${firstName}", "${lastName}", ${roleId}, ${managerId})`
 
                                 db.query(sql3, (err, rows) => {
