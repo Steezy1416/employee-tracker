@@ -32,7 +32,7 @@ const departments = () => {
                 type: "list",
                 name: "departmentOption",
                 message: "What would you like to do with departments?",
-                choices: ["(1) View all departments", "(2) Add a department", "(3) Remove department", "(4) View total utilized budget for a department"]
+                choices: ["(1) View all departments", "(2) Add a department", "(3) Remove department"]
             },
             {
                 type: "input",
@@ -56,19 +56,7 @@ const departments = () => {
                         return true
                     }
                 }
-            },
-            {
-                type: "rawlist",
-                name: "totalDepartmentName",
-                message: "Which department would you like to view its total utilized budged?",
-                choices: departmentNames,
-                when: ({ departmentOption }) => {
-                    const option = departmentOption.split(/[()]+/)
-                    if (option[1] === "4") {
-                        return true
-                    }
-                }
-            },
+            }
         ])
         .then(answer => {
             console.log(answer)
@@ -89,7 +77,7 @@ const employees = () => {
                 type: "list",
                 name: "employeeOption",
                 message: "What would you like to do with employees",
-                choices: ["(1) View all employees", "(2) Add a employee", "(3) Update employee role", "(4) Remove Employee", "(5) View employees by manager", "(6) View employees by department", "(7) Update employee manager"]
+                choices: ["(1) View all employees", "(2) Add a employee", "(3) Update employee role", "(4) Remove Employee", "(5) View employees by manager", "(6) Update employee manager"]
             },
             //Start of add employee
             {
@@ -140,7 +128,7 @@ const employees = () => {
             },
             {
                 type: "rawlist",
-                name: "employeeDepartmentUpt",
+                name: "employeeRoleUpt",
                 message: "What is the updated employees role?",
                 choices: roleNames,
                 when: ({ employeeNameUpt }) => employeeNameUpt
@@ -164,9 +152,10 @@ const employees = () => {
 
             //start of employee based on manager
             {
-                type: "input",
+                type: "rawlist",
                 name: "employeeManagerList",
                 message: "Under which manager?",
+                choices: managerNames,
                 when: ({ employeeOption }) => {
                     const option = employeeOption.split(/[()]+/)
                     if (option[1] === "5") {
@@ -176,21 +165,6 @@ const employees = () => {
             },
             //end of employee based on manager
 
-            //start of employee based on department
-            {
-                type: "rawlist",
-                name: "employeeDepartmentList",
-                message: "Under which department?",
-                choices: departmentNames,
-                when: ({ employeeOption }) => {
-                    const option = employeeOption.split(/[()]+/)
-                    if (option[1] === "6") {
-                        return true
-                    }
-                }
-            },
-            //end of employee based on department
-
             //start of update employee manager
             {
                 type: "rawlist",
@@ -199,15 +173,16 @@ const employees = () => {
                 choices: employeeNames,
                 when: ({ employeeOption }) => {
                     const option = employeeOption.split(/[()]+/)
-                    if (option[1] === "7") {
+                    if (option[1] === "6") {
                         return true
                     }
                 }
             },
             {
-                type: "input",
+                type: "rawlist",
                 name: "employeeManagerUpdateMan",
                 message: "Who will be the updated manager?",
+                choices: managerNames,
                 when: ({ employeeManagerUpdateName }) => employeeManagerUpdateName
             },
             //end of update employee manager

@@ -4,7 +4,7 @@ const cTable = require("console.table")
 //returns all department names
 const getDepartmentNames = () => {
     return new Promise((resolve, reject) => {
-        const sql = "SELECT name FROM departments"
+        const sql = "SELECT department FROM departments"
         db.query(sql, (err, rows) => {
             if(err){
                 reject(err)
@@ -42,7 +42,7 @@ const displayDepartment = () => {
 //adds a department based on name givien by user
 const addDepartment = ({addDepartmentName}) => {
     return new Promise((resolve, reject) => {
-        const sql = `INSERT INTO departments (name) VALUES("${addDepartmentName}")`
+        const sql = `INSERT INTO departments (department) VALUES("${addDepartmentName}")`
         db.query(sql, (err, rows) => {
             if(err){
                 reject(err)
@@ -57,7 +57,7 @@ const addDepartment = ({addDepartmentName}) => {
 //removes a department based on user choice
 const removeDepartment = ({removeDepartmentName}) => {
     return new Promise((resolve, reject) => {
-        const sql = `DELETE FROM departments WHERE name = "${removeDepartmentName}";`
+        const sql = `DELETE FROM departments WHERE department = "${removeDepartmentName}";`
         db.query(sql, (err, rows) => {
             if(err){
                 reject(err)

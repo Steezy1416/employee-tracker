@@ -4,7 +4,7 @@ DROP TABLE IF EXISTS departments;
 
 CREATE TABLE departments (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(30)
+    department VARCHAR(30)
 );
 
 CREATE TABLE roles (
@@ -23,3 +23,9 @@ CREATE TABLE employees (
     manager_id INT,
     FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE SET NULL
 );
+
+-- new roles table
+select title, salary, department
+    from roles
+    left join departments
+    on roles.department_id = departments.id;

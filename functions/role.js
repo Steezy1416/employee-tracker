@@ -26,7 +26,10 @@ const roleHandler = (optionNum, answer) => {
 //displays a table of all the roles
 const displayRoles = () => {
     return new Promise((resolve, reject) => {
-        const sql = "SELECT * FROM roles"
+        const sql = `select roles.id, title, salary, department
+        from roles
+        left join departments
+        on roles.department_id = departments.id;`
         db.query(sql, (err, rows) => {
             if (err) {
                 reject(err)
@@ -44,7 +47,7 @@ const addRole = (answer) => {
     return new Promise((resolve, reject) => {
         //serches for the id based on the department picked then runs the query to insert into table
         const { roleName, roleSalary, roleDepartment } = answer
-        const sql1 = `SELECT id FROM departments WHERE name = "${roleDepartment}"`
+        const sql1 = `SELECT id FROM departments WHERE department = "${roleDepartment}"`
 
         db.query(sql1, (err, rows) => {
             if (err) {
